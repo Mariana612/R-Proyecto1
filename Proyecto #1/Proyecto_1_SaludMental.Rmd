@@ -81,7 +81,7 @@ Las variables principales son:
 
 ## ¿Quiénes forman la muestra? — Gráficas Univariables
 
-Antes de hablar de enfermedades, debemos conocer a quiénes encuestamos. Las siguientes tres visualizaciones nos muestran la composición de la muestra: cómo se distribuyen por género, por rendimiento académico y cuántos presentan depresión.
+Antes de hablar de enfermedades, debemos conocer a quiénes encuestamos. Las siguientes cuatro visualizaciones nos muestran la composición de la muestra: cómo se distribuyen por género, por rendimiento académico, y cuántos presentan depresión o ansiedad.
 
 ### Distribución por Género
 
@@ -169,6 +169,44 @@ ggplotly(U1, tooltip = "text")
 ```
 
 Este gráfico revela uno de los hallazgos más llamativos del conjunto de datos: una proporción significativa de los estudiantes encuestados reporta tener depresión. Lejos de ser un fenómeno marginal, la depresión aparece como una realidad extendida dentro de la comunidad estudiantil universitaria.
+
+---
+
+### Prevalencia de la Ansiedad en la Muestra
+
+```{r u4-ansiedad}
+conteos_ans     <- table(data$Ansiedad)
+porcentajes_ans <- round(prop.table(conteos_ans) * 100, 1)
+
+conteo_ansiedad <- data.frame(
+  Ansiedad   = names(conteos_ans),
+  Cantidad   = as.numeric(conteos_ans),
+  Porcentaje = as.numeric(porcentajes_ans),
+  Etiqueta   = paste0(as.numeric(porcentajes_ans), "%")
+)
+
+U_ans <- ggplot(conteo_ansiedad,
+                aes(x    = Ansiedad,
+                    y    = Cantidad,
+                    fill = Ansiedad,
+                    text = paste0("Cantidad: ", Cantidad,
+                                  "\nPorcentaje: ", Porcentaje, "%"))) +
+  geom_col(width = 0.5) +
+  geom_text(aes(y = Cantidad + 2, label = Etiqueta), size = 4) +
+  ylim(0, max(conteo_ansiedad$Cantidad) * 1.15) +
+  scale_fill_manual(values = c("No" = "#F4C430", "Yes" = "#2D68C4")) +
+  scale_x_discrete(labels = c("No" = "No", "Yes" = "Sí")) +
+  labs(
+    title = "Distribución de Ansiedad en Estudiantes Encuestados",
+    x     = "Presencia de Ansiedad en el Estudiante",
+    y     = "Número de Estudiantes Encuestados") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+ggplotly(U_ans, tooltip = "text")
+```
+
+De manera similar a la depresión, la ansiedad también muestra una prevalencia considerable en la muestra. Al comparar ambos gráficos, se puede apreciar que la ansiedad supera a la depresión en términos de frecuencia: **más de la mitad de los estudiantes encuestados reporta experimentar ansiedad**. Este hallazgo es consistente con la literatura científica, que señala a la ansiedad como la condición de salud mental más común entre la población universitaria joven. No se trata de casos aislados; es una realidad compartida por una parte importante de quienes habitan las aulas.
 
 ---
 
