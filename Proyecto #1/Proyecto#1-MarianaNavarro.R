@@ -1,5 +1,8 @@
 # PREPARACION DE INFOMRACION
 library(ggplot2)
+library(tidyr)
+library(plotly)
+
 
 data <- read.csv("Student_Mental_health.csv")
 
@@ -132,8 +135,7 @@ ggplotly(Bi3)
 
 
 # ================================================================
-# Preparar datos agrupados
-library(plotly)
+##Grafico multivariable
 
 data_par <- data.frame(
   Edad        = data$Edad,
@@ -168,7 +170,9 @@ plot_ly(data_par, type = "parcoords",
 ) %>%
   layout(title = "Perfil Multidimensional del Estudiante")
 
-library(tidyr)
+
+# ================================================================
+## Grafico con facetas
 
 # Convertir a formato largo
 data_largo <- data %>%
@@ -179,7 +183,7 @@ data_largo <- data %>%
     values_to = "Valor"
   )
 
-# Graficar con facetas
+
 g_f1 <- ggplot(data_largo, aes(x = Condicion, fill = Valor,
                                text = paste0("Condición: ", Condicion,
                                              "\nRespuesta: ", Valor))) +
@@ -204,26 +208,45 @@ g_f1 <- ggplot(data_largo, aes(x = Condicion, fill = Valor,
 ggplotly(g_f1, tooltip = "text")
 
 
-library(plotly)
 
-# Convertir las ggplots a plotly
-p1 <- ggplotly(U1, tooltip = "text")
-p2 <- ggplotly(U2)
-p3 <- ggplotly(Bi2, tooltip = "text")
-p4 <- ggplotly(Bi3)
 
-# Componer
+# Limpiar títulos Y etiquetas de ejes de cada gráfico
+p1 <- ggplotly(U1 + labs(title = "", x = "", y = ""), tooltip = "text")
+p2 <- ggplotly(U2 + labs(title = "", x = "", y = ""))
+p3 <- ggplotly(Bi2 + labs(title = "", x = "", y = ""), tooltip = "text")
+p4 <- ggplotly(Bi3 + labs(title = "", x = "", y = ""))
+
 compuesta <- subplot(
   p1, p2, p3, p4,
-  nrows = 2,
+  nrows  = 2,
   shareX = FALSE,
   shareY = FALSE,
-  titleX = TRUE,
-  titleY = TRUE
+  titleX = FALSE,   # <-- desactivar títulos de ejes heredados
+  titleY = FALSE,
+  margin = 0.10
 ) %>%
   layout(
-    title = "Resumen del Análisis de Salud Mental Estudiantil",
-    showlegend = FALSE
+    title = list(
+      text = "<b>Resumen del Análisis de Salud Mental Estudiantil</b>",
+      font = list(size = 15),
+      x    = 0.5
+    ),
+    showlegend = FALSE,
+    margin = list(t = 100, b = 60, l = 50, r = 30),
+    annotations = list(
+      list(x = 0.22, y = 1.00, text = "<b>Depresión en Estudiantes</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center"),
+      list(x = 0.78, y = 1.00, text = "<b>Distribución por CGPA</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center"),
+      list(x = 0.22, y = 0.44, text = "<b>Ansiedad por Año de Estudio</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center"),
+      list(x = 0.78, y = 0.44, text = "<b>Depresión por Género</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center")
+    )
   )
 
 compuesta

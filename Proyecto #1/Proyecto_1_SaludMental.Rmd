@@ -1,6 +1,6 @@
 ---
 title: "La Silenciosa Crisis: Salud Mental en Estudiantes Universitarios"
-author: "Mariana Navarro"
+author: "Mariana Navarro, Kevin Espinoza"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -27,22 +27,28 @@ library(scales)
 
 # Introducción
 
-En los últimos años, la salud mental universitaria ha emergido como una preocupación central en el ámbito académico global. Los estudiantes enfrentan presiones académicas, sociales y económicas que pueden desencadenar o agravar condiciones como la depresión, la ansiedad y los ataques de pánico. Sin embargo, muchas de estas realidades permanecen invisibles, escondidas detrás de calificaciones y asistencias.
+En la actualidad, la salud mental universitaria es una preocupación central en el ámbito académico global. Los estudiantes enfrentan presiones académicas, sociales y económicas que pueden desencadenar o agravar condiciones como la depresión, la ansiedad y los ataques de pánico.Sin embargo, este fenómeno rara vez se examina con datos concretos que permitan identificar patrones y grupos vulnerables.
 
-Este análisis exploratorio de datos —o EDA, por sus siglas en inglés— busca dar voz a esos números. A través de visualizaciones interactivas, exploraremos quiénes son los estudiantes afectados, qué tan prevalentes son estas condiciones y qué factores podrían estar relacionados con su aparición. La historia que los datos cuentan es tan importante como los datos mismos.
+Este análisis exploratorio de datos (EDA) busca responder una pregunta central: ¿Cómo se manifiestan la depresión, la ansiedad y los ataques de pánico entre estudiantes universitarios, y qué factores (como el género, el rendimiento  académico o el año de carrera) están asociados a estas condiciones?
 
 ---
 
 # Descripción del Problema
+El bienestar emocional de los estudiantes universitarios ha emergido como un tema de interés creciente en el ámbito de la educación superior y la salud mental. Diversos estudios han evidenciado que un número significativo de jóvenes atraviesa la etapa universitaria sin acceder a intervenciones psicológicas pertinentes, situación que se ve influenciada por factores como el desconocimiento de los servicios disponibles, el estigma asociado a los trastornos mentales y la limitada accesibilidad a recursos de salud mental.
 
-La salud mental entre la población universitaria es un fenómeno multidimensional. Factores como el rendimiento académico (medido por el CGPA), el año de estudio, el género y la edad pueden influir de manera significativa en el bienestar emocional de los estudiantes.
+El presente estudio tiene como objetivo abordar las siguientes preguntas de investigación:
 
-Las preguntas que guían este análisis son:
+>   ¿Cuál es la prevalencia de síntomas de depresión, ansiedad y ataques de pánico entre la población estudiantil universitaria?
+>
+> ¿Existen diferencias estadísticamente significativas en la prevalencia de estas condiciones según el género de los estudiantes?
+>
+> ¿Se observa una asociación entre el rendimiento académico (medido mediante el CGPA) y la presencia de depresión?
+>
+> ¿En qué año de la carrera se concentra la mayor incidencia de ansiedad?
+>
+> ¿Qué proporción de estudiantes que presentan estas condiciones recibe tratamiento o intervención psicológica adecuada?
 
-- ¿Qué tan prevalentes son la depresión, la ansiedad y los ataques de pánico en la muestra?
-- ¿Existe alguna relación entre el rendimiento académico y la salud mental?
-- ¿Hay diferencias entre géneros en la prevalencia de estas condiciones?
-- ¿Cambia la situación según el año de estudio?
+El abordaje de estas preguntas permitirá caracterizar la magnitud y distribución de los problemas de salud mental en la población universitaria, así como identificar subgrupos con mayor vulnerabilidad, lo que resulta fundamental para el diseño de estrategias de prevención e intervención dirigidas a mejorar el bienestar emocional y el rendimiento académico de los estudiantes.
 
 ---
 
@@ -104,7 +110,7 @@ U3 <- plot_ly(conteo_genero,
 U3
 ```
 
-La muestra está compuesta en su mayoría por estudiantes de género femenino. Esta distribución es importante tenerla en cuenta al interpretar los resultados, ya que el género puede modular la manera en que se experimentan y reportan las condiciones de salud mental. No es que haya más mujeres con problemas de salud mental, sino que hay más mujeres en la muestra.
+La muestra está compuesta en su mayoría por estudiantes de género femenino. Esta distribución es importante tenerla en cuenta al interpretar los resultados, ya que el género puede modular la manera en que se experimentan y reportan las condiciones de salud mental. Esta información no indica que las mujeres tienen mayor tendencia a tener problemas de salud mental, sino que hay más mujeres que fueron encuestadas en la muestra.  Esta diferencia en la representación no implica un sesgo negativo, pero sí invita a considerar el género como una variable de contexto fundamental a lo largo de todo el análisis.
 
 ---
 
@@ -130,10 +136,12 @@ U2 <- ggplot(data) +
 ggplotly(U2)
 ```
 
-La gran mayoría de los estudiantes encuestados se concentra en el rango de CGPA entre **3.00 y 3.49**, lo que sugiere que la muestra está compuesta principalmente por estudiantes con un desempeño académico bueno o muy bueno. Esto es relevante: los problemas de salud mental no son exclusivos de quienes tienen dificultades académicas; también afectan a estudiantes con alto rendimiento.
+En cuanto al rendimiento académico, la gran mayoría de los estudiantes encuestados se concentra en el rango de CGPA entre **3.00 y 3.49**, lo que sugiere que la muestra está compuesta principalmente por estudiantes con un desempeño académico bueno o muy bueno. Sin embargo, existe una presencia notable de estudiantes en rangos más bajos, lo cual será relevante al explorar la relación entre rendimiento y salud mental.
 
----
+Conociendo ya la composición de la muestra, el siguiente paso es explorar si existen relaciones entre el rendimiento académico, el género y el año de estudio con las condiciones de salud mental. ¿El CGPA influye en la depresión? ¿Los primeros años son más difíciles emocionalmente?
 
+
+## El Problema Central — ¿Qué tan extendida está la depresión?
 ### Prevalencia de la Depresión en la Muestra
 
 ```{r u1-depresion}
@@ -168,15 +176,52 @@ U1 <- ggplot(conteo_depresion,
 ggplotly(U1, tooltip = "text")
 ```
 
-Este gráfico revela uno de los hallazgos más llamativos del conjunto de datos: una proporción significativa de los estudiantes encuestados reporta tener depresión. Lejos de ser un fenómeno marginal, la depresión aparece como una realidad extendida dentro de la comunidad estudiantil universitaria.
+El grafico anterior  muestra la proporción de estudiantes encuestados que reportaron síntomas de depresión.
+La categoría “No” (estudiantes que no reportaron depresión) representa el 65.3% del total.
+La categoría “Sí” (estudiantes que reportaron depresión) constituye el 34.7%.
+Mediante este grafico se abstrae que Aproximadamente uno de cada tres estudiantes encuestados presenta síntomas de depresión, lo que indica una prevalencia considerable dentro de la población universitaria estudiada.
+
+
+Este  primer hallazgo que llama la atención es que una proporción considerable de 
+los estudiantes encuestados reporta haber experimentado depresión. Este dato 
+por sí solo justifica la necesidad de este análisis: la depresión no es un caso 
+aislado, sino una realidad que afecta a una parte significativa de la comunidad 
+estudiantil. 
+
+Esta visualización establece el punto de partida de nuestra historia: el problema 
+existe, es medible, y merece ser explorado con mayor profundidad. 
+
+
 
 ---
 
-## Las Conexiones Ocultas — Gráficas Bivariables
 
-Conociendo ya la composición de la muestra, el siguiente paso es explorar si existen relaciones entre el rendimiento académico, el género y el año de estudio con las condiciones de salud mental. ¿El CGPA influye en la depresión? ¿Los primeros años son más difíciles emocionalmente?
+###  ¿Importa el género? — Depresión y género
 
-### ¿Afecta el Rendimiento Académico a la Depresión?
+```{r bi3-depresion-genero}
+Bi3 <- ggplot(data, aes(x = Genero, fill = Depresion)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = percent) +
+  scale_fill_manual(values = c("No" = "#F4C430", "Yes" = "#2D68C4"),
+                    labels  = c("No" = "Sin Depresión", "Yes" = "Con Depresión")) +
+  labs(
+    title = "Proporción de Depresión por Género",
+    x     = "Género",
+    y     = "Porcentaje") +
+  theme_minimal()
+
+ggplotly(Bi3)
+```
+
+
+Al normalizar los datos al 100%, podemos comparar de manera adecuada las diferencias que emergren. El gráfico muestra que las estudiantes de género femenino presentan una **mayor proporción de depresión** que sus compañeros masculinos. Esta diferencia, aunque puede estar influenciada por la mayor disposición femenina a reportar síntomas, señala que el género es una variable que no puede ignorarse en el diseño de políticas de salud mental universitaria.  
+
+
+
+---
+
+
+### La presión académica — CGPA y depresión
 
 ```{r bi1-cgpa-depresion}
 Bi1 <- ggplot(data, aes(x = CGPA, fill = Depresion)) +
@@ -193,7 +238,8 @@ Bi1 <- ggplot(data, aes(x = CGPA, fill = Depresion)) +
 ggplotly(Bi1)
 ```
 
-Lo que este gráfico revela es contraintuitivo: la depresión no es más frecuente en los rangos bajos de CGPA. De hecho, la mayor concentración de estudiantes con depresión se da en el rango **3.00 – 3.49**, el mismo rango donde se concentra la mayoría de la muestra. Esto sugiere que el estrés de mantener un buen promedio puede ser tan o más pesado que el de obtener notas bajas.
+Lo que este gráfico revela es que la depresión es más frecuente en los rangos superiores de CGPA. De hecho, la mayor concentración de estudiantes con depresión se da en el rango **3.00 – 3.49**, el mismo rango donde se concentra la mayoría de la muestra.En el caso de los rangos de CGPA mas bajo se observa que no se reporta sintomas de depresin.  
+Lo anterior sugiere que el estrés de mantener un buen promedio puede ser tan o más pesado que el de obtener notas bajas.
 
 ---
 
@@ -226,32 +272,20 @@ Bi2 <- ggplot(conteo_Bi2,
 ggplotly(Bi2, tooltip = "text")
 ```
 
-La ansiedad muestra un patrón claro: el **primer y segundo año** concentran la mayor cantidad de estudiantes ansiosos en términos absolutos, lo que coincide con el período de mayor adaptación a la vida universitaria. Sin embargo, también es donde hay más estudiantes en general, por lo que es importante interpretar esto con cautela. Lo notable es que la ansiedad acompaña a los estudiantes en todos los años de carrera.
+¿En qué momento de la carrera se concentra más la ansiedad? Esta visualización 
+revela que los primeros años de estudio concentran la mayor cantidad de 
+estudiantes en la muestra, lo que naturalmente también implica mayor número 
+de casos de ansiedad. Sin embargo, al observar la proporción de estudiantes 
+con ansiedad dentro de cada año, se evidencia que la condición no desaparece 
+con el avance en la carrera.
+
+Esta concentracion de datos en los primeros años tambien coincide con el período de mayor adaptación a la vida universitaria. Sin embargo, también es donde hay más estudiantes en general, por lo que es importante interpretar esto con cautela. Este dato es relevante para diseñar 
+intervenciones tempranas dirigidas a estudiantes de nuevo ingreso.
+
 
 ---
 
-### ¿Deprime Igual a Hombres y Mujeres?
-
-```{r bi3-depresion-genero}
-Bi3 <- ggplot(data, aes(x = Genero, fill = Depresion)) +
-  geom_bar(position = "fill") +
-  scale_y_continuous(labels = percent) +
-  scale_fill_manual(values = c("No" = "#F4C430", "Yes" = "#2D68C4"),
-                    labels  = c("No" = "Sin Depresión", "Yes" = "Con Depresión")) +
-  labs(
-    title = "Proporción de Depresión por Género",
-    x     = "Género",
-    y     = "Porcentaje") +
-  theme_minimal()
-
-ggplotly(Bi3)
-```
-
-Al normalizar los datos al 100%, podemos comparar de manera justa entre géneros. El gráfico muestra que las estudiantes de género femenino presentan una **mayor proporción de depresión** que sus compañeros masculinos. Esta diferencia, aunque puede estar influenciada por la mayor disposición femenina a reportar síntomas, señala que el género es una variable que no puede ignorarse en el diseño de políticas de salud mental universitaria.
-
----
-
-## Una Vista de Conjunto — Gráfica Multidimensional
+## El perfil completo
 
 Los gráficos anteriores nos han mostrado relaciones de a dos variables. Pero la salud mental es un fenómeno complejo, donde múltiples factores coexisten y se interrelacionan. La siguiente visualización de coordenadas paralelas nos permite ver a todos los estudiantes a la vez, a través de seis dimensiones simultáneas.
 
@@ -290,7 +324,14 @@ plot_ly(data_par, type = "parcoords",
   layout(title = "Perfil Multidimensional del Estudiante")
 ```
 
-Cada línea representa un estudiante. Las líneas **azules** corresponden a quienes reportan depresión; las **amarillas**, a quienes no. Al arrastrar los ejes, es posible filtrar subgrupos e identificar perfiles. Un patrón que emerge: los estudiantes con depresión tienen una alta probabilidad de presentar también ansiedad y ataques de pánico, lo que sugiere una **comorbilidad importante** entre estas condiciones. Interactúa con la visualización para explorar estos patrones.
+Cada línea representa un estudiante. Las líneas **azules** corresponden a quienes reportan depresión; las **amarillas**, a quienes no. Al arrastrar los ejes, es posible filtrar subgrupos e identificar perfiles. Un patrón que emerge: los estudiantes con depresión tienen una alta probabilidad de presentar también ansiedad y ataques de pánico, lo que sugiere una **comorbilidad importante** entre estas condiciones. 
+
+Además, es posible identificar un subgrupo preocupante: estudiantes que 
+presentan múltiples condiciones pero que no están recibiendo tratamiento. 
+Este hallazgo es quizás el más importante del análisis, ya que señala una brecha 
+crítica entre la necesidad y el acceso a atención psicológica.
+
+Se peude interactuar con la visualización para explorar estos patrones.
 
 ---
 
@@ -341,34 +382,64 @@ Esta visualización de facetas es especialmente reveladora: en prácticamente to
 Para cerrar el análisis, la siguiente imagen compuesta reúne cuatro de los gráficos explorados, ofreciendo una vista panorámica de los hallazgos más relevantes en un solo lugar.
 
 ```{r compuesta}
-p1 <- ggplotly(U1, tooltip = "text")
-p2 <- ggplotly(U2)
-p3 <- ggplotly(Bi2, tooltip = "text")
-p4 <- ggplotly(Bi3)
+# Limpiar títulos Y etiquetas de ejes de cada gráfico
+p1 <- ggplotly(U1 + labs(title = "", x = "", y = ""), tooltip = "text")
+p2 <- ggplotly(U2 + labs(title = "", x = "", y = ""))
+p3 <- ggplotly(Bi2 + labs(title = "", x = "", y = ""), tooltip = "text")
+p4 <- ggplotly(Bi3 + labs(title = "", x = "", y = ""))
 
 compuesta <- subplot(
   p1, p2, p3, p4,
-  nrows    = 2,
-  shareX   = FALSE,
-  shareY   = FALSE,
-  titleX   = TRUE,
-  titleY   = TRUE
+  nrows  = 2,
+  shareX = FALSE,
+  shareY = FALSE,
+  titleX = FALSE,   
+  titleY = FALSE,
+  margin = 0.10
 ) %>%
   layout(
-    title      = "Resumen del Análisis de Salud Mental Estudiantil",
-    showlegend = FALSE
+    title = list(
+      text = "<b>Resumen del Análisis de Salud Mental Estudiantil</b>",
+      font = list(size = 15),
+      x    = 0.5
+    ),
+    showlegend = FALSE,
+    margin = list(t = 100, b = 60, l = 50, r = 30),
+    annotations = list(
+      list(x = 0.22, y = 1.00, text = "<b>Depresión en Estudiantes</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center"),
+      list(x = 0.78, y = 1.00, text = "<b>Distribución por CGPA</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center"),
+      list(x = 0.22, y = 0.44, text = "<b>Ansiedad por Año de Estudio</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center"),
+      list(x = 0.78, y = 0.44, text = "<b>Depresión por Género</b>",
+           xref = "paper", yref = "paper", showarrow = FALSE,
+           font = list(size = 11), xanchor = "center")
+    )
   )
 
 compuesta
 ```
 
-De izquierda a derecha y de arriba hacia abajo: la prevalencia de la depresión, la distribución del rendimiento académico, la ansiedad según año de estudio y la depresión según género. Juntos, estos cuatro gráficos cuentan la historia completa de la muestra.
+A modo de resumen, esta imagen compuesta reúne cuatro de las visualizaciones 
+principales del análisis: la distribución de depresión, el rendimiento académico 
+(CGPA), la ansiedad por año de estudio y la depresión por género.
+
+En conjunto, estas gráficas cuentan de forma concisa la historia que hemos 
+desarrollado a lo largo del análisis: la depresión es prevalente, el rendimiento 
+académico está relacionado con la salud mental, los primeros años son críticos 
+para la ansiedad, y las mujeres presentan mayor vulnerabilidad. Este cuadro 
+integrado sirve como punto de referencia visual para las conclusiones que se 
+presentan a continuación.
 
 ---
 
 # Conclusiones
 
-El análisis exploratorio realizado sobre este conjunto de datos revela una realidad preocupante pero importante de visibilizar:
+Mdiante el análisis exploratorio realizado se extraen las siguientes conclusiones: 
 
 1. **La depresión afecta a una proporción significativa de estudiantes**, independientemente de su rendimiento académico. Mantener un CGPA alto no protege contra la depresión.
 
@@ -380,7 +451,11 @@ El análisis exploratorio realizado sobre este conjunto de datos revela una real
 
 5. **La búsqueda de tratamiento especializado sigue siendo baja** en relación con la prevalencia de las condiciones reportadas, lo que señala una brecha importante entre la necesidad de atención y el acceso efectivo a ella.
 
-Estos hallazgos invitan a las instituciones universitarias a diseñar estrategias proactivas de apoyo en salud mental, especialmente orientadas a los primeros años de carrera y con enfoque de género.
+En definitiva, los datos no solo confirman que la salud mental estudiantil es un 
+problema real y medible, sino que permiten identificar con precisión los grupos 
+y momentos donde la intervención es más necesaria. El primer paso para 
+mejorar el bienestar estudiantil es exactamente este: escuchar lo que los datos 
+tienen que decir.
 
 ---
 
